@@ -1,0 +1,10 @@
+language: go
+go:
+- 1.8.x
+before_install:
+- cp config.sample.json config.json
+install:
+- go get github.com/SiCo-Ops/B
+notifications:
+  slack:
+    secure: h+R3Non45MeQD3hMFToDdieEfp6YdkZzwWpi0zr3CqDMyn5Lcf+UFRA+vhEqYmk5QLJJYu9LSLGf5Q2nFN3t+ilpOnuXU5HS2xN3+qp3M6xWSBw20RQIovwqzc6GOBHbwUAjqfem5xM3F+LLd/7n7OCNF12BS/aQOZ0Si3XZKU1B5WeJxKQK0TsKMaSK8jVbvgrtLs05rb1vSKeTDyiSi4EDXmmJnai1c1N44oZpJXNFNeujOsGH209jaAozdXmjIzA6q08+2GjbLkOVZEpjne/wtQeyvgj/Rs5JEUwCjp4eplUs0X4BHpmWcwbfV9R5qNRNlbpKX0FNtIO3r0SA/o6kjElNNxtCh/vlVb8qiWjHbUwSEMW5EpaNz6zqM3LhY0h7CXL1Is4PPaCYMPyPvlP12m2ufQT7qx3nsxrynk9vXeREOaHUHezfIcsFvnxaz0+vB5WtZBU7JnO7UaOKNaVX3ND/N6PlmikYAQjjKljYP5F5uMpJDX0H2qWCOfFW4tPSPfvrNDi3W9MP1ab3DAiV+8Tsnqo3pjXfGSM/X1IbztNa1PqJhyrT8NmwwfXSNna2g7e5KHJ9QhBa+qSaq4dWiHtXd49j8RlfuxFP1eKnwyRkTzF5TT8PZkNeDHsQBgIHPWh/WbrZ1tR11aJfL1AD9mqwq/YSbXX0d8Gzkjs=
