@@ -9,8 +9,9 @@ Email:    sinerwr@gmail.com
 package controller
 
 import (
-	// "github.com/getsentry/raven-go"
+	"github.com/getsentry/raven-go"
 	"google.golang.org/grpc"
+	"log"
 
 	"github.com/SiCo-Ops/Pb"
 	"github.com/SiCo-Ops/cfg/v2"
@@ -19,7 +20,7 @@ import (
 
 var (
 	config     cfg.ConfigItems
-	configPool = redis.Pool("", "", "")
+	configPool = redis.NewPool()
 	RPCServer  = grpc.NewServer()
 )
 
@@ -34,8 +35,16 @@ func init() {
 		cfg.Unmarshal(data, &config)
 	}
 
-	configPool = redis.Pool(config.RedisConfigHost, config.RedisConfigPort, config.RedisConfigAuth)
-	redis.Hmset(configPool, "system.config", &config)
+	configPool = redis.InitPool(config.RedisConfigHost, config.RedisConfigPort, config.RedisConfigAuth)
+	err := redis.Hmset(configPool, "system.config", &config)
+	if err != nil {
+		raven.CaptureError(err, nil)
+		log.Fatalln(err)
+	}
 
 	pb.RegisterConfigServiceServer(RPCServer, &ConfigService{})
+
+	if config.SentryBStatus == "active" && config.SentryBDSN != "" {
+		raven.SetDSN(config.SentryBDSN)
+	}
 }
