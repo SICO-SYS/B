@@ -13,4 +13,6 @@ RUN apk --update add git && \
 
 WORKDIR $GOPATH/bin
 
+VOLUME $GOPATH/bin
+
 CMD ["B"]

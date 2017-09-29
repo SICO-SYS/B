@@ -14,7 +14,7 @@ import (
 	"log"
 
 	"github.com/SiCo-Ops/Pb"
-	"github.com/SiCo-Ops/cfg/v2"
+	"github.com/SiCo-Ops/cfg"
 	"github.com/SiCo-Ops/dao/redis"
 )
 
@@ -24,22 +24,26 @@ var (
 	RPCServer  = grpc.NewServer()
 )
 
+const (
+	configPath string = "config.json"
+)
+
 func ServePort() string {
 	return config.RpcBPort
 }
 
 func init() {
-	data := cfg.ReadLocalFile()
-
-	if data != nil {
-		cfg.Unmarshal(data, &config)
+	data, err := cfg.ReadFilePath(configPath)
+	if err != nil {
+		log.Fatalln(err)
 	}
+	cfg.Unmarshal(data, &config)
 
 	configPool = redis.InitPool(config.RedisConfigHost, config.RedisConfigPort, config.RedisConfigAuth)
-	err := redis.Hmset(configPool, "system.config", &config)
-	if err != nil {
-		raven.CaptureError(err, nil)
-		log.Fatalln(err)
+	rediserr := redis.Hmset(configPool, "system.config", &config)
+	if rediserr != nil {
+		raven.CaptureError(rediserr, nil)
+		log.Fatalln(rediserr)
 	}
 
 	pb.RegisterConfigServiceServer(RPCServer, &ConfigService{})
