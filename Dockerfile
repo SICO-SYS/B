@@ -7,7 +7,7 @@ RUN apk --update add git && \
     cd $GOPATH/src/github.com/SiCo-Ops/B && \
     apk del git && \
     go-wrapper install && \
-    wget https://s3.amazonaws.com/sico-ops/config.sample.json -O $GOPATH/bin/config.json && \
+    wget http://s3.amazonaws.com/sico-ops/config.sample.json -O $GOPATH/bin/config.json && \
     cd $GOPATH/bin &&\
     rm -rf $GOPATH/src
 
